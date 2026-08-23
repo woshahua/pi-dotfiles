@@ -1,0 +1,29 @@
+# Pi secrets and private state
+auth.json
+**/auth.json
+sessions/
+**/sessions/
+models-store.json
+**/models-store.json
+
+# Package managers and downloaded sources
+node_modules/
+**/node_modules/
+npm/
+git/
+
+# Credentials and local environment
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+*.kdbx
+
+# Generated and backup files
+*.bak
+*.backup
+*.lock
+*.log
+.DS_Store

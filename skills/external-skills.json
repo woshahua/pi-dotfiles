@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "skills": {
+    "extract-design": {
+      "source": "https://github.com/Manavarya09/design-extract.git",
+      "skillPath": "skills/extract-design/SKILL.md",
+      "contentHash": "46669b37440bfd2819363fd950633283d2af1f22"
+    },
+    "diagnose-crash": {
+      "managedBy": "omarchy",
+      "path": "/usr/share/omarchy/default/agents/skills/diagnose-crash"
+    },
+    "omarchy": {
+      "managedBy": "omarchy",
+      "path": "/usr/share/omarchy/default/agents/skills/omarchy"
+    }
+  }
+}
