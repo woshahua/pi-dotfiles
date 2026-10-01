@@ -56,4 +56,4 @@ install_file "$repo_root/pi/extensions/omarchy-system-theme.ts" "$pi_config_dir/
 
 printf 'Installed the public Pi configuration into %s\n' "$pi_config_dir"
 printf 'Backup: %s\n' "$backup_dir"
-printf 'Run `pi update` to resolve or update declared packages.\n'
+printf 'Run `pi update --extensions` to resolve or update declared packages.\n'

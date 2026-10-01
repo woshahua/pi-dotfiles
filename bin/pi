@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# The standalone Pi binary cannot update itself. Let its owner, mise, update it.
+export MISE_MINIMUM_RELEASE_AGE=0
+original=("$@")
+run_pi() {
+  exec mise x pi -- pi "${original[@]}"
+}
+[[ ${1:-} == update ]] || run_pi
+shift
+
+self=false
+extensions=false
+all=false
+force=false
+positional=false
+trust_args=()
+for arg in "$@"; do
+  case "$arg" in
+    --self) self=true ;;
+    --extensions) extensions=true ;;
+    --all) all=true ;;
+    --force) force=true ;;
+    self|pi)
+      $positional && run_pi
+      positional=true
+      self=true
+      ;;
+    --approve|-a|--no-approve|-na) trust_args+=("$arg") ;;
+    *) run_pi ;; # Pi owns help, package targets, model updates, and invalid options.
+  esac
+done
+
+# Preserve Pi's validation instead of partially running an invalid command.
+if $all && { $self || $extensions; }; then
+  run_pi
+fi
+if $extensions && ! $self && ! $all; then
+  run_pi
+fi
+
+printf 'Updating Pi through mise...\n'
+if $force; then
+  mise -C "$HOME" install --force pi
+else
+  mise -C "$HOME" upgrade --no-prune pi
+fi
+printf 'Pi version: '
+mise -C "$HOME" x pi -- pi --version
+
+if $all || $extensions; then
+  exec mise x pi -- pi update --extensions "${trust_args[@]}"
+fi
+printf 'Extensions are unchanged. Run pi update --extensions to update them.\n'
