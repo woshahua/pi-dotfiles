@@ -12,7 +12,7 @@ master, slave = pty.openpty()
 fcntl.ioctl(slave, termios.TIOCSWINSZ, struct.pack('HHHH',40,100,0,0))
 args = ['pi','--offline','--no-extensions','--no-skills','--no-prompt-templates','--no-context-files','--no-session',
         '-e',str(repo/'pi/extensions/candy-ui/index.ts'),'-e',str(repo/'pi/extensions/pi-splash/index.ts'),
-        '-e',str(pathlib.Path.home()/'.pi/agent/extensions/tmustier-pi-extensions/raw-paste/index.ts'),
+        '-e',str(pathlib.Path.home()/'.pi/agent/git/github.com/tmustier/pi-extensions/raw-paste/index.ts'),
         '-e',str(repo/'tests/fixtures/candy-ui.ts'),'--provider','candy-test','--model','one']
 p = subprocess.Popen(args,stdin=slave,stdout=slave,stderr=slave,env=env,cwd='/tmp',close_fds=True)
 os.close(slave)

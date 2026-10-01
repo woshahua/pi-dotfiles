@@ -57,6 +57,11 @@ pi
 
 第三方 Pi 扩展由 `pi/settings.json` 记录来源，并由 Pi 自己安装。Omarchy 系统 skills 继续由系统管理。
 
+2026-10-01 的[扩展检查记录](docs/plugin-audit-2026-10-01.md)列出更新日期、功能重叠和清理结果。
+配置不再声明旧 npm Pi 核心、旧启动 Header、未使用的终端主题包，以及不需要的 Ponytail 和 pi-simplify。
+Git 扩展只从 Pi 管理的 `git/` 目录加载；不要将同一仓库再次克隆到 `extensions/`。
+Pi 0.87.1 的包筛选路径不加 `./` 前缀，否则配置可能不会启用对应入口。
+
 ## 更新配置
 
 修改仓库中的文件后运行安装脚本。若要从本机回写，务必逐个文件审查并只复制上述白名单内容；不要直接复制整个 `~/.pi/agent`。
@@ -69,8 +74,8 @@ pi
 ./scripts/install-splash.sh
 ```
 
-安装脚本备份 `settings.json` 和已有的同名扩展，只停用 `pi-startup-header`
-的扩展入口，保留其安装包与配色文件。重启 `pi` 后，新建的空会话显示约 1.2 秒的
+安装脚本备份 `settings.json` 和已有的同名扩展。如果配置仍声明 `pi-startup-header`，
+只停用其扩展入口；新安装无需此包，配色文件继续使用。重启 `pi` 后，新建的空会话显示约 1.2 秒的
 woshahua 点阵文字显现与扫光，不绘制外框；结束后停止刷新。恢复历史会话及 `/reload`
 只显示静态画面。RPC 和非交互模式不创建组件。宽度不足 32 列时显示紧凑文字。
 
@@ -85,9 +90,9 @@ node tests/pi-splash.test.ts
 python3 tests/verify-splash.py
 ```
 
-恢复旧 Header：将 `extensions/pi-splash` 移出 Pi 的扩展目录，再把
-`settings.json` 内 `npm:pi-startup-header` 的条目恢复为字符串，或移除该条目的
-`extensions: []`。不要覆盖此后修改过的整个设置文件。
+恢复旧 Header：将 `extensions/pi-splash` 移出 Pi 的扩展目录，运行
+`pi install npm:pi-startup-header`。如果配置保留了此包的对象条目，将其恢复为
+`"npm:pi-startup-header"` 字符串或移除 `extensions: []`。不要覆盖此后修改过的整个设置文件。
 
 此扩展使用 Pi 的 `session_start` 和 `ctx.ui.setHeader()`，不修改 Pi 核心。
 动画设计参考 Candy 的字符显隐与定时刷新思路。当前图标来自
